@@ -31,15 +31,15 @@ process nucmer {
   tag { "${idR} vs ${idQ}" }
 
   input:
-  set idR, seqR, idQ, seqQ from genomePairs
+  set idR, "ref.fasta.gz", idQ, "qry.fasta.gz" from genomePairs
 
   output:
   set idR, idQ, val("raw"), "out.delta" into rawDeltas
   set idR, idQ, val("filtered"), "filtered.delta" into fltDeltas
 
   """
-zcat $seqR > ref.fasta
-zcat $seqQ > qry.fasta
+zcat ref.fasta.gz > ref.fasta
+zcat qry.fasta.gz > qry.fasta
 nucmer --maxmatch ref.fasta qry.fasta
 delta-filter -1 out.delta > filtered.delta
   """
